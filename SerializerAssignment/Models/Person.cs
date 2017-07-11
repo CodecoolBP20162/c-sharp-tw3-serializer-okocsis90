@@ -71,6 +71,7 @@ namespace SerializerAssignment.Models
         {
             if (GetHighestSerialNum() != 0)
             {
+                _currentSerialNum = 1;
                 return Deserialize(1);
             }
             throw new FileNotFoundException();
@@ -87,7 +88,7 @@ namespace SerializerAssignment.Models
             throw new FileNotFoundException();
         }
 
-        public static Person showNext()
+        public static Person ShowNext()
         {
             _currentSerialNum++;
             int highest = GetHighestSerialNum();
@@ -98,7 +99,7 @@ namespace SerializerAssignment.Models
             return Deserialize(_currentSerialNum);
         }
 
-        public static Person showPrev()
+        public static Person ShowPrev()
         {
             _currentSerialNum--;
             if (_currentSerialNum == 0)

@@ -25,102 +25,45 @@ namespace SerializerAssignment
         {
             Person newPerson = new Person(nameBox.Text, addressBox.Text, phoneBox.Text);
             newPerson.Serialize();
-            Person toShow;
-            try
-            {
-                toShow = Person.ShowLast();
-            }
-            catch (FileNotFoundException)
-            {
-                toShow = new Person();
-            }
-
-            nameBox.Text = toShow.Name;
-            addressBox.Text = toShow.Address;
-            phoneBox.Text = toShow.PhoneNum;
+            ShowAppropriatePerson(Person.ShowLast);
         }
 
         private void Persons_Load(object sender, EventArgs e)
         {
-            Person toShow;
-            try
-            {
-                toShow = Person.ShowLast();
-            }
-            catch (FileNotFoundException)
-            {
-                toShow = new Person();
-            }
-
-            nameBox.Text = toShow.Name;
-            addressBox.Text = toShow.Address;
-            phoneBox.Text = toShow.PhoneNum;
+            ShowAppropriatePerson(Person.ShowLast);
         }
 
         private void prevBtn_Click(object sender, EventArgs e)
         {
-            Person toShow;
-            try
-            {
-                toShow = Person.showPrev();
-            }
-            catch (FileNotFoundException)
-            {
-                toShow = new Person();
-            }
-
-            nameBox.Text = toShow.Name;
-            addressBox.Text = toShow.Address;
-            phoneBox.Text = toShow.PhoneNum;
+            ShowAppropriatePerson(Person.ShowPrev);
         }
 
         private void nextBtn_Click(object sender, EventArgs e)
         {
-            Person toShow;
-            try
-            {
-                toShow = Person.showNext();
-            }
-            catch (FileNotFoundException)
-            {
-                toShow = new Person();
-            }
-
-            nameBox.Text = toShow.Name;
-            addressBox.Text = toShow.Address;
-            phoneBox.Text = toShow.PhoneNum;
+            ShowAppropriatePerson(Person.ShowNext);
         }
 
         private void goToFirstBtn_Click(object sender, EventArgs e)
         {
-            Person toShow;
-            try
-            {
-                toShow = Person.ShowFirst();
-            }
-            catch (FileNotFoundException)
-            {
-                toShow = new Person();
-            }
-
-            nameBox.Text = toShow.Name;
-            addressBox.Text = toShow.Address;
-            phoneBox.Text = toShow.PhoneNum;
-
+            ShowAppropriatePerson(Person.ShowFirst);
         }
 
         private void goToLastBtn_Click(object sender, EventArgs e)
         {
+            ShowAppropriatePerson(Person.ShowLast);
+        }
+
+        private void ShowAppropriatePerson(Func<Person> actualMethod)
+        {
             Person toShow;
             try
             {
-                toShow = Person.ShowLast();
+                toShow = actualMethod();
             }
             catch (FileNotFoundException)
             {
                 toShow = new Person();
             }
-
             nameBox.Text = toShow.Name;
             addressBox.Text = toShow.Address;
             phoneBox.Text = toShow.PhoneNum;
