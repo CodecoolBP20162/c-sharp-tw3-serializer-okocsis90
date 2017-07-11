@@ -21,7 +21,7 @@ namespace SerializerAssignment.Models
         public int SerialNumber
         {
             get { return _serialNumber; }
-            set { _serialNumber = value; } 
+            set { _serialNumber = value; }
         }
 
         [NonSerialized()]
@@ -46,7 +46,7 @@ namespace SerializerAssignment.Models
 
         public void Serialize()
         {
-            string serialNum = SerialNumStringFormatter(SerialNumber);
+            string serialNum = SerialNumToString(SerialNumber);
             string filePath = "person" + serialNum + ".dat";
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -56,7 +56,7 @@ namespace SerializerAssignment.Models
 
         public static Person Deserialize(int serialNum)
         {
-            string serialNumString = SerialNumStringFormatter(serialNum);
+            string serialNumString = SerialNumToString(serialNum);
             string input = "person" + serialNumString + ".dat";
             Person person = new Person();
             IFormatter formatter = new BinaryFormatter();
@@ -122,22 +122,26 @@ namespace SerializerAssignment.Models
                 if (m.Value != "")
                 {
                     string currentSerialNumString = Regex.Match(m.Value, "[0-9]{2}").Value;
-                    int currentSerialNum;
-
-                    if (currentSerialNumString[0] == '0')
-                    {
-                        currentSerialNum = Int32.Parse(currentSerialNumString[1].ToString());
-                    }
-                    else
-                    {
-                        currentSerialNum = Int32.Parse(Regex.Match(m.Value, "[0-9]{2}").Value);
-                    }
-
+                    int currentSerialNum = SerialStringToNum(currentSerialNumString);
                     if (currentSerialNum >= num) num = currentSerialNum;
                 }
             }
             if (num == 100) throw new Exception("Not possible to make new Persons.");
             return num;
+        }
+
+        private static int SerialStringToNum(string numString)
+        {
+            int currentSerialNum;
+            if (numString[0] == '0')
+            {
+                currentSerialNum = Int32.Parse(numString[1].ToString());
+            }
+            else
+            {
+                currentSerialNum = Int32.Parse(numString);
+            }
+            return currentSerialNum;
         }
 
         private static string GetCurrentPath()
@@ -151,7 +155,7 @@ namespace SerializerAssignment.Models
             return result;
         }
 
-        private static string SerialNumStringFormatter(int num)
+        private static string SerialNumToString(int num)
         {
             string serialNum;
             if (num < 10)
